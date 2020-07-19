@@ -3,6 +3,7 @@
 #include "EventManager.h"
 #include "Util.h"
 
+
 PlayScene::PlayScene()
 {
 	PlayScene::start();
@@ -25,6 +26,8 @@ void PlayScene::draw()
 			m_pPlaneSprite->getWidth(), m_pPlaneSprite->getHeight());
 		Util::DrawRect(m_pObstacle->getTransform()->position - glm::vec2(m_pObstacle->getWidth() * 0.5, m_pObstacle->getHeight() * 0.5),
 			m_pObstacle->getWidth(), m_pObstacle->getHeight());
+
+		m_displayGrid();
 	}
 
 }
@@ -159,9 +162,36 @@ void PlayScene::handleEvents()
 	}
 
 }
+void PlayScene::m_buildGrid()
+{
+	//Logic to add PathNodes to the scene
+	for (int row = 0; row <= Config::ROW_NUM+1; row++)
+	{
+		for (int col = 0; col <= Config::COL_NUM; col++)
+		{
+			auto pathNode = new PathNode();
+			pathNode->getTransform()->position = glm::vec2(col*pathNode->getWidth(),row *pathNode->getHeight());
+			m_pGrid.push_back(pathNode);
+		}
+	}
+}
+
+void PlayScene::m_displayGrid()
+{
+	for (int row = 0; row <= Config::ROW_NUM+1; row++)
+	{
+		for (int col = 0; col <= Config::COL_NUM; col++)
+		{
+			
+			Util::DrawRect(m_pGrid[row*Config::COL_NUM + col]->getTransform()->position - glm::vec2(m_pGrid[row * Config::COL_NUM + col]->getWidth() * 0.5, m_pGrid[row * Config::COL_NUM + col]->getHeight() * 0.5),
+				5, 5);
+		}
+	}
+}
 
 void PlayScene::start()
 {
+	m_buildGrid();
 
 	m_bDebugMode = false;
 	m_bHpressed = false;
@@ -179,3 +209,5 @@ void PlayScene::start()
 	addChild(m_pObstacle);
 	
 }
+
+

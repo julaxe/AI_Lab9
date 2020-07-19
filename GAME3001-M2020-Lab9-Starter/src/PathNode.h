@@ -3,7 +3,7 @@
 
 class PathNode : public GameObject {
 public:
-	PathNode() : m_bLOS(false) {}
+	PathNode();
 	~PathNode() {}
 
 	virtual void draw() override;
