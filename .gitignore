@@ -5,6 +5,11 @@
 *.ilk
 *.pdb
 *.log
+*.obj
+*.tlog
+*.pdb
+*.ilk
+
 GAME3001-M2020-Lab9-Starter/.vs/Template/v16/.suo
 GAME3001-M2020-Lab9-Starter/bin/Debug/Template.exe
 GAME3001-M2020-Lab9-Starter/bin/Debug/Template.ilk
@@ -45,3 +50,5 @@ GAME3001-M2020-Lab9-Starter/Template/Intermediate/Debug/UIControl.obj
 GAME3001-M2020-Lab9-Starter/Template/Intermediate/Debug/Util.obj
 GAME3001-M2020-Lab9-Starter/Template/Intermediate/Debug/vc142.idb
 GAME3001-M2020-Lab9-Starter/Template/Intermediate/Debug/vc142.pdb
+*.ipch
+*.pdb

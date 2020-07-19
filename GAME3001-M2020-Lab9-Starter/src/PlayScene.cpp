@@ -15,7 +15,18 @@ void PlayScene::draw()
 {
 	drawDisplayList();
 
-	Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlaneSprite->getTransform()->position);
+	if (m_bDebugMode)
+	{
+		Util::DrawLine(m_pPlayer->getTransform()->position, m_pPlaneSprite->getTransform()->position);
+
+		Util::DrawRect(m_pPlayer->getTransform()->position - glm::vec2(m_pPlayer->getWidth()*0.5, m_pPlayer->getHeight() * 0.5),
+			m_pPlayer->getWidth(), m_pPlayer->getHeight());
+		Util::DrawRect(m_pPlaneSprite->getTransform()->position- glm::vec2(m_pPlaneSprite->getWidth() * 0.5, m_pPlaneSprite->getHeight() * 0.5),
+			m_pPlaneSprite->getWidth(), m_pPlaneSprite->getHeight());
+		Util::DrawRect(m_pObstacle->getTransform()->position - glm::vec2(m_pObstacle->getWidth() * 0.5, m_pObstacle->getHeight() * 0.5),
+			m_pObstacle->getWidth(), m_pObstacle->getHeight());
+	}
+
 }
 
 void PlayScene::update()
@@ -23,6 +34,10 @@ void PlayScene::update()
 	updateDisplayList();
 
 	CollisionManager::LOSCheck(m_pPlayer, m_pPlaneSprite, m_pObstacle);
+
+	CollisionManager::AABBCheck(m_pPlayer, m_pPlaneSprite);
+
+	CollisionManager::AABBCheck(m_pPlayer, m_pObstacle);
 }
 
 void PlayScene::clean()
@@ -122,10 +137,34 @@ void PlayScene::handleEvents()
 	{
 		TheGame::Instance()->changeSceneState(END_SCENE);
 	}
+	if (!m_bHpressed)
+	{
+		if (EventManager::Instance().isKeyDown(SDL_SCANCODE_H))
+		{
+			m_bHpressed = true;
+			m_bDebugMode = !m_bDebugMode;
+			if (m_bDebugMode)
+			{
+				std::cout << "Debug Mode ON" << std::endl;
+			}
+			else
+			{
+				std::cout << "Debug Mode OFF" << std::endl;
+			}
+		}
+	}
+	if (EventManager::Instance().isKeyUp(SDL_SCANCODE_H))
+	{
+		m_bHpressed = false;
+	}
+
 }
 
 void PlayScene::start()
 {
+
+	m_bDebugMode = false;
+	m_bHpressed = false;
 	// Plane Sprite
 	m_pPlaneSprite = new Plane();
 	addChild(m_pPlaneSprite);
